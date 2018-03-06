@@ -58,10 +58,12 @@ namespace IsometricGameStage
             textureList = new List<Texture2D>();
 
             /* Sometimes the thread doesn't load everything, since it's all happening so fast */
-            Thread tFillStageMatrix = new Thread(ConvertToInt);
-            Thread tLoadTextures = new Thread(() => LoadTextures(content)); //Lambda Expression
-            tLoadTextures.Start();
-            tFillStageMatrix.Start();
+            //Thread tFillStageMatrix = new Thread(ConvertToInt);
+            //Thread tLoadTextures = new Thread(() => LoadTextures(content)); //Lambda Expression
+            //tLoadTextures.Start();
+            //tFillStageMatrix.Start();
+            ConvertToInt();
+            LoadTextures(content);
         }
 
         /* This method converts the stage matrix inside the layers List to a integer matrix, since it's stored as a string */
