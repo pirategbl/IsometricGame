@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/tiles/brick.png</SourceFile>
-  <SourceTime>2018-03-15T01:08:41.5005795-03:00</SourceTime>
-  <DestFile>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/bin/Windows/tiles/brick.xnb</DestFile>
-  <DestTime>2018-03-16T14:25:20.8183734-03:00</DestTime>
+  <SourceFile>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/tiles/paperRedTile.png</SourceFile>
+  <SourceTime>2018-03-08T15:02:44.8612531-03:00</SourceTime>
+  <DestFile>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/bin/Windows/tiles/paperRedTile.xnb</DestFile>
+  <DestTime>2018-03-16T14:25:20.821364-03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T12:05:36-03:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

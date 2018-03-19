@@ -20,6 +20,18 @@
 /processorParam:TextureFormat=Compressed
 /build:font.spritefont
 
+#begin tiles/anotherBrick.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:tiles/anotherBrick.png
+
 #begin tiles/brick.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -32,7 +44,7 @@
 /processorParam:TextureFormat=Color
 /build:tiles/brick.png
 
-#begin tiles/pencil.png
+#begin character/character.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -42,9 +54,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:tiles/pencil.png
+/build:character/character.png
 
-#begin tiles/brick2.png
+#begin tiles/paperRedTile.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -54,5 +66,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:tiles/brick2.png
+/build:tiles/paperRedTile.png
+
+#begin tiles/paperRedBrick.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:tiles/paperRedBrick.png
 

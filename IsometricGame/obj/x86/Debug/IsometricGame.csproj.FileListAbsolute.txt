@@ -1,6 +1,3 @@
-C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\brick.xnb
-C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\pencil.xnb
-C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\maps\sketch.tmx
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\IsometricGame.exe
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\IsometricGame.pdb
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\MonoGame.Extended.dll
@@ -30,4 +27,14 @@ C:\Users\gabri\source\repos\IsometricGame\IsometricGame\obj\x86\Debug\IsometricG
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\obj\x86\Debug\IsometricGame.exe
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\obj\x86\Debug\IsometricGame.pdb
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\font.xnb
-C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\brick2.xnb
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\maps\sketchFinal.tmx
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\maps\sketchLayer1.tmx
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\maps\sketchLayer2.tmx
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\maps\sketchThreeLayers.tmx
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\maps\testing.tmx
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\anotherBrick.xnb
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\brick.xnb
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\character\character.xnb
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\maps\teste.tmx
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\paperRedTile.xnb
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\paperRedBrick.xnb

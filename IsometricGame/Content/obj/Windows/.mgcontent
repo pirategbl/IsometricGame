@@ -5,8 +5,10 @@
   <Config />
   <SourceFiles>
     <File>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/font.spritefont</File>
+    <File>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/tiles/anotherBrick.png</File>
     <File>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/tiles/brick.png</File>
-    <File>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/tiles/pencil.png</File>
-    <File>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/tiles/brick2.png</File>
+    <File>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/character/character.png</File>
+    <File>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/tiles/paperRedTile.png</File>
+    <File>C:/Users/gabri/source/repos/IsometricGame/IsometricGame/Content/tiles/paperRedBrick.png</File>
   </SourceFiles>
 </SourceFileCollection>

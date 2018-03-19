@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Xml.Linq;
-using System.Threading;
+using IsometricGame.Source.ACharacter;
 using System.Xml;
+using IsometricGame.Source.AIsometricCoord;
+using MonoGame.Extended.ViewportAdapters;
+using Microsoft.Xna.Framework.Input;
 
-namespace IsometricGameStage
+namespace IsometricGame.Source.AStage
 {
     class Stage
     {
@@ -15,12 +17,6 @@ namespace IsometricGameStage
 
         // Stores the Height of the map
         private int mapHeight;
-
-        // This is the matrix for the first layer of the stage
-        private int[,] stageFirstLayer;
-
-        // This is the matrix for the second layer of the stage (layers go bottom-up)
-        private int[,] stageSecondLayer;
 
         // This XML is the stage itself, with all informations: layers, size, etc
         XmlDocument xmlMap = new XmlDocument();
@@ -31,15 +27,15 @@ namespace IsometricGameStage
         // This list has all textures used by the stage (can be an Array, needs to be tested)
         private List<Texture2D> textureList;
 
-        // These constants represent the size of each tile. Every tile must have these dimension.
-        private const int TileWidth = 64;
-        private const int TileHeight = 32;
-        //
+        // This list contains all layers as a integer matrix
+        private List<int[,]> allLayers;
 
-        public Stage(ContentManager content)
+        public Character mainCharacter;
+
+        public Stage(ContentManager content, BoxingViewportAdapter view)
         {
-            /* Loads the XML Stage */
-            xmlMap.Load("Content/maps/sketch.tmx");
+            
+            xmlMap.Load("Content/maps/teste.tmx");
 
             /* Makes a list of every layer in the given stage */
             layers = xmlMap.GetElementsByTagName("layer");
@@ -47,52 +43,83 @@ namespace IsometricGameStage
             /* These instructions will determine the size of the stage matrix */
             mapWidth = int.Parse(xmlMap.DocumentElement.Attributes.GetNamedItem("width").Value);
             mapHeight = int.Parse(xmlMap.DocumentElement.Attributes.GetNamedItem("height").Value);
-            /*                                                                */
-
-            /* These two instructions make the layers matrices */
-            stageFirstLayer = new int[mapHeight, mapWidth];
-            stageSecondLayer = new int[mapHeight, mapWidth];
-            /*                                                  */
-
+            /*        
+             *        */
+            allLayers = new List<int[,]>();
             /* Makes an instance of the Texture List */
             textureList = new List<Texture2D>();
-
             /* Sometimes the thread doesn't load everything, since it's all happening so fast */
             //Thread tFillStageMatrix = new Thread(ConvertToInt);
             //Thread tLoadTextures = new Thread(() => LoadTextures(content)); //Lambda Expression
             //tLoadTextures.Start();
             //tFillStageMatrix.Start();
-            ConvertToInt();
             LoadTextures(content);
+            ChangeStage(1);
+            mainCharacter = new Character(content, view);
+
+            mainCharacter.setPosition(IsometricCoord.MapToIso(new Vector2(14, 2))); // X = J Y = I
+            // The number inside this instruction tell
+            // the position inside the matrix
+
+            /*System.Console.WriteLine(mainCharacter.getMatrixPosition());
+            System.Console.WriteLine(mainCharacter.getPosition());
+            System.Console.WriteLine(AIsometricCoord.IsometricCoord.CoordToMatrix(mainCharacter.getPosition(), mapWidth, mapHeight));*/
+            System.Console.WriteLine();
+        }
+
+        public void ChangeStage(int aWhichStage)
+        {
+            /* Loads the XML Stage */
+            switch (aWhichStage)
+            {
+                case 1:
+                    xmlMap.Load("Content/maps/testing.tmx");
+                    break;
+            }
+
+            /* Makes a list of every layer in the given stage */
+            layers = xmlMap.GetElementsByTagName("layer");
+
+            /* These instructions will determine the size of the stage matrix */
+            mapWidth = int.Parse(xmlMap.DocumentElement.Attributes.GetNamedItem("width").Value);
+            mapHeight = int.Parse(xmlMap.DocumentElement.Attributes.GetNamedItem("height").Value);
+            /*        
+             *        */
+            allLayers = new List<int[,]>();
+
+            for (int i = 0; i < layers.Count; i++)
+            {
+                allLayers.Add(new int[mapWidth, mapHeight]);
+            }
+
+            ConvertToInt();
         }
 
         /* This method converts the stage matrix inside the layers List to a integer matrix, since it's stored as a string */
         private void ConvertToInt()
         {
-            /* Gets the string which is like " 1,1,1,1,1,..." */
-            string FirstLayerArrayWithCommas = layers[0].InnerText;
-
-            /* Removes the commas so the string becomes only numbers and "\n" */
-            string[] FirstLayerSplittedArray = FirstLayerArrayWithCommas.Split(',');
-
-            /* Same as the above */
-            string SecondLayerArrayWithCommas = layers[1].InnerText;
-            string[] SecondLayerSplittedArray = SecondLayerArrayWithCommas.Split(',');
-            /*                   */
-
             /* Converts the string into the integer matrix proper */
-            for (int i = 0; i < mapHeight; i++)
+
+            for(int l = 0; l < allLayers.Count; l++)
             {
-                for (int j = 0; j < mapWidth; j++)
+                /* Gets the string which is like " 1,1,1,1,1,..." */
+                string FirstLayerArrayWithCommas = layers[l].InnerText;
+
+                /* Removes the commas so the string becomes only numbers and "\n" */
+                string[] FirstLayerSplittedArray = FirstLayerArrayWithCommas.Split(',');
+
+                for (int i = 0; i < mapHeight; i++)
                 {
-                    /* Since "SplittedArray" is a one dimensional array, the tiles are organized like this:
-                     Row-Column-Column-Column(...)-Row(...)
-                     So to fill the stage matrix correctly, I'm using the math below:
-                     The first column is filled ENTIRELY (all of the first column's rows), then the second, then the third, and so on...
-                     It's very important to note, however, that in order for this algorithm to work, the map must have the exact same
-                     size of Height and Width */
-                    stageFirstLayer[j, i] = int.Parse(FirstLayerSplittedArray[i + (j * mapHeight)]);
-                    stageSecondLayer[j, i] = int.Parse(SecondLayerSplittedArray[i + (j * mapHeight)]);
+                    for (int j = 0; j < mapWidth; j++)
+                    {
+                        /* Since "SplittedArray" is a one dimensional array, the tiles are organized like this:
+                            Row-Column-Column-Column(...)-Row(...)
+                            So to fill the stage matrix correctly, I'm using the math below:
+                            The first column is filled ENTIRELY (all of the first column's rows), then the second, then the third, and so on...
+                            It's very important to note, however, that in order for this algorithm to work, the map must have the exact same
+                            size of Height and Width */
+                        allLayers[l][j,i] = int.Parse(FirstLayerSplittedArray[i + (j * mapHeight)]);
+                    }
                 }
             }
         }
@@ -100,44 +127,105 @@ namespace IsometricGameStage
         /* Load the Textures */
         private void LoadTextures(ContentManager ct)
         {
+            textureList.Add(ct.Load<Texture2D>("tiles/paperRedTile"));
             textureList.Add(ct.Load<Texture2D>("tiles/brick"));
-            textureList.Add(ct.Load<Texture2D>("tiles/pencil"));
-            textureList.Add(ct.Load<Texture2D>("tiles/brick"));
-            textureList.Add(ct.Load<Texture2D>("tiles/brick2"));
         }
-
+               
         /* It doesn't actually Draw the stage, since PlaceTile is the method that really does it, however it prepares the positioning of each tile */
-        public void Draw(SpriteBatch sb, Vector2 aCameraPosition)
-        {
-            /* First Layer */
-            for (int i = 0; i < mapHeight; i++)
+        public void Draw(SpriteBatch sb)
+        {            
+            if(allLayers.Count > 1)
             {
-                for (int j = 0; j < mapWidth; j++)
+                Vector2 position;
+                int tile;
+                // Floor Layer
+                for (int i = 0; i < mapHeight; i++)
                 {
-                    Vector2 position;
-                    int tile;
+                    for (int j = 0; j < mapWidth; j++)
+                    {
+                        
 
-                    /* Gets the tile based on the */
-                    tile = stageFirstLayer[i, j];
-                    position.X = j + aCameraPosition.X;
-                    position.Y = i + aCameraPosition.Y;
-                    position = twoDToIso(position);
-                    PlaceTile(tile, position, sb);
+                        /* Gets the tile based on the */
+                        tile = allLayers[0][i, j];
+                        position.X = j;
+                        position.Y = i;
+                        position = IsometricCoord.MapToIso(position);
+                        PlaceTile(tile, position, sb);
+                        
+                    }
                 }
-            }
 
-            /* Second Layer */
-            for (int i = 0; i < mapHeight; i++)
-            {
-                for (int j = 0; j < mapWidth; j++)
+                // Draws the tiles that should be "behind" the character
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X - 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 - 1; // -1 From the Layer offset, + 1 from the character offset
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y, (int)mainCharacter.getMatrixPosition().X - 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X + 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X + 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y + 1, (int)mainCharacter.getMatrixPosition().X - 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y + 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+                //
+
+                mainCharacter.Draw(sb);
+
+                // Draws the tiles that "hide" the character
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y + 1, (int)mainCharacter.getMatrixPosition().X];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 + 1; // -1 From the Layer offset, + 1 from the character offset
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y, (int)mainCharacter.getMatrixPosition().X + 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X + 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+                
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y + 1, (int)mainCharacter.getMatrixPosition().X + 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X + 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y + 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+                //
+
+                if (Keyboard.GetState().IsKeyDown(Keys.F))
                 {
-                    Vector2 position;
-                    int tile;
-                    tile = stageSecondLayer[i, j];
-                    position.X = j + aCameraPosition.X - 1;
-                    position.Y = i + aCameraPosition.Y - 1;
-                    position = twoDToIso(position);
-                    PlaceTile(tile, position, sb);
+                    for (int l = 1; l < allLayers.Count; l++)
+                    {
+                        for (int i = 0; i < mapHeight; i++)
+                        {
+                            for (int j = 0; j < mapWidth; j++)
+                            {
+                                tile = allLayers[l][i, j];
+                                position.X = j - 1;
+                                position.Y = i - 1;
+                                position = IsometricCoord.MapToIso(position);
+                                PlaceTile(tile, position, sb);
+
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -149,29 +237,64 @@ namespace IsometricGameStage
                 case 0:
                     break;
                 case 1:
-                    aSb.Draw(textureList[1], aPos, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                    aSb.Draw(textureList[0], aPos, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
                     break;
                 case 2:
-                    aSb.Draw(textureList[2], aPos, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
-                    break;
-                case 3:
-                    aSb.Draw(textureList[3], aPos, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
+                    aSb.Draw(textureList[1], aPos, null, Color.White, 0f, Vector2.Zero, 1, SpriteEffects.None, 0f);
                     break;
             }
         }
 
-        public Vector2 twoDToIso(Vector2 aPosition)
+        public Vector2 getMapSize()
         {
-            float x = (aPosition.X - aPosition.Y) * (TileWidth / 2);
-            float y = (aPosition.X + aPosition.Y) * (TileHeight / 2);
-            return new Vector2(x, y);
+            return new Vector2(mapWidth, mapHeight);
         }
 
-        public Vector2 IsoTo2D(Vector2 aPosition)
+        public void Update(KeyboardState ks)
         {
-            float x = ((aPosition.X / (TileWidth / 2)) + (aPosition.Y / (TileHeight / 2))) / 2;
-            float y = ((aPosition.Y / (TileHeight / 2)) - (aPosition.X / (TileWidth / 2))) / 2;
-            return new Vector2(x, y);
+            if (ks.IsKeyDown(Keys.W))
+            {
+                Vector2 positionAux;
+                Vector2 matrixAux;
+                positionAux = mainCharacter.getPosition() + new Vector2(0, -Character.speed);
+                matrixAux = IsometricCoord.IsoToMap(positionAux);
+                if (matrixAux.X >= 0 && matrixAux.X < mapWidth && matrixAux.Y >= 0 && matrixAux.Y < mapHeight && !doesItCollide(matrixAux))
+                    mainCharacter.setPosition(new Vector2(mainCharacter.getPosition().X + 0, mainCharacter.getPosition().Y - Character.speed));
+            }
+            if (ks.IsKeyDown(Keys.S))
+            {
+                Vector2 positionAux;
+                Vector2 matrixAux;
+                positionAux = mainCharacter.getPosition() + new Vector2(0, Character.speed);
+                matrixAux = IsometricCoord.IsoToMap(positionAux);
+                if (matrixAux.X >= 0 && matrixAux.X < mapWidth && matrixAux.Y >= 0 && matrixAux.Y < mapHeight && !doesItCollide(matrixAux))
+                    mainCharacter.setPosition(new Vector2(mainCharacter.getPosition().X + 0, mainCharacter.getPosition().Y + Character.speed));
+            }
+            if (ks.IsKeyDown(Keys.A))
+            {
+                Vector2 positionAux;
+                Vector2 matrixAux;
+                positionAux = mainCharacter.getPosition() + new Vector2(-Character.speed, 0);
+                matrixAux = IsometricCoord.IsoToMap(positionAux);
+                if (matrixAux.X >= 0 && matrixAux.X < mapWidth && matrixAux.Y >= 0 && matrixAux.Y < mapHeight && !doesItCollide(matrixAux))
+                    mainCharacter.setPosition(new Vector2(mainCharacter.getPosition().X + -Character.speed, mainCharacter.getPosition().Y + 0));
+            }
+            if (ks.IsKeyDown(Keys.D))
+            {
+                Vector2 positionAux;
+                Vector2 matrixAux;
+                positionAux = mainCharacter.getPosition() + new Vector2(Character.speed, 0);
+                matrixAux = IsometricCoord.IsoToMap(positionAux);
+                if (matrixAux.X >= 0 && matrixAux.X < mapWidth && matrixAux.Y >= 0 && matrixAux.Y < mapHeight && !doesItCollide(matrixAux))
+                    mainCharacter.setPosition(new Vector2(mainCharacter.getPosition().X + Character.speed, mainCharacter.getPosition().Y + 0));
+            }
+        }
+
+        public bool doesItCollide(Vector2 aux)
+        {
+            if (allLayers[1][(int)aux.Y, (int)aux.X] != 0)
+                return true;
+            return false;
         }
     }
 }
