@@ -174,11 +174,11 @@ namespace IsometricGame.Source.AStage
                 position = IsometricCoord.MapToIso(position);
                 PlaceTile(tile, position, sb);
 
-                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X + 1];
+                /*tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X + 1];
                 position.X = (int)mainCharacter.getMatrixPosition().X + 1 - 1;
                 position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 - 1;
                 position = IsometricCoord.MapToIso(position);
-                PlaceTile(tile, position, sb);
+                PlaceTile(tile, position, sb);*/
 
                 tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y + 1, (int)mainCharacter.getMatrixPosition().X - 1];
                 position.X = (int)mainCharacter.getMatrixPosition().X - 1 - 1;
@@ -190,6 +190,13 @@ namespace IsometricGame.Source.AStage
                 mainCharacter.Draw(sb);
 
                 // Draws the tiles that "hide" the character
+                
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X + 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X + 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+                
                 tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y + 1, (int)mainCharacter.getMatrixPosition().X];
                 position.X = (int)mainCharacter.getMatrixPosition().X - 1;
                 position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 + 1; // -1 From the Layer offset, + 1 from the character offset
