@@ -18,7 +18,7 @@ namespace IsometricGame.Source.ACharacter
         public Character(ContentManager aContent, BoxingViewportAdapter va)
         {
             this.texture = aContent.Load<Texture2D>("character/character");
-            this.matrixPosition = new Vector2(3, 9);
+            this.matrixPosition = new Vector2(0, 0);
             _camera = new Camera2D(va);
         }
 
@@ -59,7 +59,7 @@ namespace IsometricGame.Source.ACharacter
 
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(this.texture, new Vector2(this.absolutePosition.X, this.absolutePosition.Y - (texture.Height / 1.2f)), 
+            sb.Draw(this.texture, new Vector2(this.absolutePosition.X, this.absolutePosition.Y - texture.Height * 0.75f), 
                 null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0f);
         }
         

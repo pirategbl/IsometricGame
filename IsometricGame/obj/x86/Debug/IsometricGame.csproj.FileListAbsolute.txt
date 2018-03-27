@@ -34,7 +34,7 @@ C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Co
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\maps\testing.tmx
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\anotherBrick.xnb
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\brick.xnb
-C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\character\character.xnb
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\maps\teste.tmx
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\paperRedTile.xnb
 C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\tiles\paperRedBrick.xnb
+C:\Users\gabri\source\repos\IsometricGame\IsometricGame\bin\Windows\x86\Debug\Content\character\character.xnb
