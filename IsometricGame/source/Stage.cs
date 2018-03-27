@@ -193,6 +193,7 @@ namespace IsometricGame.Source.AStage
             PlaceTile(layers[1][(int)depthSorting[0, 1].Y, (int)depthSorting[0, 1].X].getTexture(),
                     layers[1][(int)depthSorting[0, 1].Y, (int)depthSorting[0, 1].X].Position, sb);           
 
+<<<<<<< HEAD
             PlaceTile(layers[1][(int)depthSorting[0, 2].Y, (int)depthSorting[0, 2].X].getTexture(),
                 layers[1][(int)depthSorting[0, 2].Y, (int)depthSorting[0, 2].X].Position, sb);
 
@@ -200,6 +201,70 @@ namespace IsometricGame.Source.AStage
             for (int i = 0; i <= depthSorting[0, 0].Y; i++)
             {
                 for (int j = 0; j < mapWidth; j++)
+=======
+                // Draws the tiles that should be "behind" the character
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X - 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 - 1; // -1 From the Layer offset, + 1 from the character offset
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y, (int)mainCharacter.getMatrixPosition().X - 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+
+                /*tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X + 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X + 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);*/
+
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y + 1, (int)mainCharacter.getMatrixPosition().X - 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y + 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+                //
+
+                mainCharacter.Draw(sb);
+
+                // Draws the tiles that "hide" the character
+                
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y - 1, (int)mainCharacter.getMatrixPosition().X + 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X + 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+                
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y + 1, (int)mainCharacter.getMatrixPosition().X];
+                position.X = (int)mainCharacter.getMatrixPosition().X - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1 + 1; // -1 From the Layer offset, + 1 from the character offset
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y, (int)mainCharacter.getMatrixPosition().X + 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X + 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+                
+                tile = allLayers[1][(int)mainCharacter.getMatrixPosition().Y + 1, (int)mainCharacter.getMatrixPosition().X + 1];
+                position.X = (int)mainCharacter.getMatrixPosition().X + 1 - 1;
+                position.Y = (int)mainCharacter.getMatrixPosition().Y + 1 - 1;
+                position = IsometricCoord.MapToIso(position);
+                PlaceTile(tile, position, sb);
+                //
+
+                if (Keyboard.GetState().IsKeyDown(Keys.F))
+>>>>>>> a320c73ca020864e45d7b4643f4c1466c55148a8
                 {
                     PlaceTile(layers[1][i, j].getTexture(), layers[1][i, j].Position, sb);
                 }
